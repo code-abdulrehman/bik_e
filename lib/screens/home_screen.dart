@@ -147,19 +147,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (_) =>
-                                  DetailScreen(product: filteredProducts[4]),
+                                  DetailScreen(product: filteredProducts[6]),
                             ),
                           ),
                           child: Stack(
                             clipBehavior: Clip.none,
                             children: [
-                              // Background Card
-                              ClipPath(
-                                clipper: OrganicCardClipper(),
-                                child: Container(
+                              Container(
                                   height: 240,
                                   width: double.infinity,
                                   decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
                                     color: const Color(0xFF353F54),
                                     gradient: RadialGradient(
                                       colors: [
@@ -194,7 +192,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ],
                                   ),
                                 ),
-                              ),
                               // Big Cycle Image
                               Positioned(
                                 right: -20,
@@ -230,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     else
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
                         child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 300),
                           child: GridView.builder(
@@ -242,8 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisCount: 2,
                                   childAspectRatio:
                                       0.68, // slightly taller for asymmetric clipper
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 20,
+                                  crossAxisSpacing: 10
                                 ),
                             itemCount: filteredProducts.length,
                             itemBuilder: (context, index) {

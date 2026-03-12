@@ -70,10 +70,9 @@ class MapScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   GlassCard(
-                    height: 42,
                     borderRadius: 21,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      padding: const EdgeInsets.symmetric(horizontal: 1),
                       child: Row(
                         children: [
                           const Icon(
@@ -86,13 +85,13 @@ class MapScreen extends StatelessWidget {
                             child: TextField(
                               style: GoogleFonts.poppins(
                                 color: Colors.white,
-                                fontSize: 13,
+                                fontSize: 14,
                               ),
                               decoration: const InputDecoration(
                                 hintText: 'Search stations...',
                                 hintStyle: TextStyle(
                                   color: Colors.white24,
-                                  fontSize: 13,
+                                  fontSize: 14,
                                 ),
                                 border: InputBorder.none,
                                 isDense: true,

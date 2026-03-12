@@ -10,6 +10,9 @@ class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback onTap;
 
+  // Set the radius here to make it easy to change everywhere at once
+  static const double cardRadius = 30.0;
+
   const ProductCard({super.key, required this.product, required this.onTap});
 
   @override
@@ -18,31 +21,31 @@ class ProductCard extends StatelessWidget {
       onTap: onTap,
       child: Stack(
         children: [
-          // Outer Shadow Layer
+          // 1. OUTER SHADOW LAYER
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ClipPath(
-              clipper: OrganicCardClipper(),
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.4),
-                      blurRadius: 20,
-                      offset: const Offset(10, 10),
-                    ),
-                  ],
-                ),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(cardRadius),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.4),
+                    blurRadius: 20,
+                    offset: const Offset(10, 10),
+                  ),
+                ],
               ),
             ),
           ),
-          // Main Card Body
+          
+          // 2. MAIN CARD BODY
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ClipPath(
-              clipper: OrganicCardClipper(),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(cardRadius),
               child: Container(
                 decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(cardRadius),
                   color: const Color(0xFF353F54),
                   gradient: RadialGradient(
                     center: Alignment.center,
@@ -78,50 +81,13 @@ class ProductCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Favorite Toggle
                     Align(
-                      alignment: Alignment.topRight, // Heart on the right
-                      child: GestureDetector(
-                        onTap: () {
-                          final provider = context.read<ProductProvider>();
-                          provider.toggleFavorite(product.id);
-                          final isFav = provider.isFavorite(product.id);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                isFav
-                                    ? 'Added to Favorites'
-                                    : 'Removed from Favorites',
-                              ),
-                              duration: const Duration(seconds: 1),
-                              behavior: SnackBarBehavior.floating,
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.accentBlue1.withOpacity(0.2),
-                                blurRadius: 10,
-                                spreadRadius: 2,
-                              ),
-                            ],
-                          ),
-                          child: Consumer<ProductProvider>(
-                            builder: (context, provider, _) {
-                              final isFav = provider.isFavorite(product.id);
-                              return Icon(
-                                isFav ? Icons.favorite : Icons.favorite_border,
-                                color: AppColors.accentBlue1,
-                                size: 18,
-                              );
-                            },
-                          ),
-                        ),
-                      ),
+                      alignment: Alignment.topRight,
+                      child: _buildFavoriteIcon(context),
                     ),
+                    
+                    // Product Image with Floor Shadow
                     Expanded(
                       child: Stack(
                         alignment: Alignment.center,
@@ -144,23 +110,18 @@ class ProductCard extends StatelessWidget {
                           ),
                           Hero(
                             tag: 'product-${product.id}',
-                            child: LayoutBuilder(
-                              builder: (context, constraints) {
-                                return Center(
-                                  child: Image.asset(
-                                    product.imageUrl,
-                                    fit: BoxFit.contain,
-                                    width:
-                                        constraints.maxWidth * 0.8, // 80% width
-                                  ),
-                                );
-                              },
+                            child: Image.asset(
+                              product.imageUrl,
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ],
                       ),
                     ),
+                    
                     const SizedBox(height: 12),
+                    
+                    // Brand & Name
                     Text(
                       product.brand.toUpperCase(),
                       style: GoogleFonts.poppins(
@@ -179,31 +140,23 @@ class ProductCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    
                     const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.start, // Price on the left
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.textPrice.withOpacity(0.3),
-                                blurRadius: 8,
-                                spreadRadius: 1,
-                              ),
-                            ],
+                    
+                    // Price
+                    Text(
+                      '\$${product.price.toStringAsFixed(2)}',
+                      style: GoogleFonts.poppins(
+                        color: AppColors.textPrice,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        shadows: [
+                          Shadow(
+                            color: AppColors.textPrice.withOpacity(0.3),
+                            blurRadius: 8,
                           ),
-                          child: Text(
-                            '\$${product.price.toStringAsFixed(2)}',
-                            style: GoogleFonts.poppins(
-                              color: AppColors.textPrice,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -214,40 +167,36 @@ class ProductCard extends StatelessWidget {
       ),
     );
   }
-}
 
-// Custom Clipper for the "Opposite" organic card shape
-class OrganicCardClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-
-    // MIRRORED DESIGN
-    // Start at the Top-Right (high point)
-    path.moveTo(size.width, size.height * 0.08);
-    path.quadraticBezierTo(size.width, 0, size.width * 0.85, 0);
-
-    // Slant DOWN toward the Top-Left
-    path.lineTo(size.width * 0.15, size.height * 0.08);
-    path.quadraticBezierTo(0, size.height * 0.1, 0, size.height * 0.25);
-
-    // Drop to the Bottom-Left (low point)
-    path.lineTo(0, size.height * 0.92);
-    path.quadraticBezierTo(0, size.height, size.width * 0.15, size.height);
-
-    // Slant UP toward the Bottom-Right
-    path.lineTo(size.width * 0.85, size.height * 0.92);
-    path.quadraticBezierTo(
-      size.width,
-      size.height * 0.9,
-      size.width,
-      size.height * 0.75,
+  Widget _buildFavoriteIcon(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        final provider = context.read<ProductProvider>();
+        provider.toggleFavorite(product.id);
+      },
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.accentBlue1.withOpacity(0.2),
+              blurRadius: 10,
+              spreadRadius: 2,
+            ),
+          ],
+        ),
+        child: Consumer<ProductProvider>(
+          builder: (context, provider, _) {
+            final isFav = provider.isFavorite(product.id);
+            return Icon(
+              isFav ? Icons.favorite : Icons.favorite_border,
+              color: AppColors.accentBlue1,
+              size: 18,
+            );
+          },
+        ),
+      ),
     );
-
-    path.close();
-    return path;
   }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

@@ -147,15 +147,18 @@ class _DetailScreenState extends State<DetailScreen> {
                 Expanded(
                   flex: 4,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
                     child: GlassCard(
                       borderRadius: 40,
-                      opacity: 0.1,
+                      opacity:
+                          0.8, // Increased to 0.8 to match the dark ProductCard look
+                      // Ensure your GlassCard widget uses the (0xFF353F54) and (0xFF242C3B) colors internally
                       child: Padding(
-                        padding: const EdgeInsets.all(25.0),
+                        padding: const EdgeInsets.all(5.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            // Tabs Section (Description / Specification)
                             Row(
                               children: [
                                 Expanded(
@@ -204,8 +207,11 @@ class _DetailScreenState extends State<DetailScreen> {
                               ],
                             ),
                             const SizedBox(height: 20),
+
+                            // Content Section
                             Expanded(
                               child: SingleChildScrollView(
+                                physics: const BouncingScrollPhysics(),
                                 child: !isSpecTab
                                     ? Text(
                                         widget.product.description,
@@ -215,53 +221,17 @@ class _DetailScreenState extends State<DetailScreen> {
                                           height: 1.5,
                                         ),
                                       )
-                                    : Column(
-                                        children: widget
-                                            .product
-                                            .specifications
-                                            .entries
-                                            .map((e) {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                      vertical: 5.0,
-                                                    ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Text(
-                                                      e.key,
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                            color:
-                                                                Colors.white60,
-                                                            fontSize: 14,
-                                                          ),
-                                                    ),
-                                                    Text(
-                                                      e.value,
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                            color: Colors.white,
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            })
-                                            .toList(),
-                                      ),
+                                    : _buildSpecsTable(),
                               ),
                             ),
+
                             const SizedBox(height: 15),
+
+                            // Bottom Price and Cart Row
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                // 1. Price Section
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -276,15 +246,19 @@ class _DetailScreenState extends State<DetailScreen> {
                                       '\$${widget.product.price.toStringAsFixed(2)}',
                                       style: GoogleFonts.poppins(
                                         color: AppColors.textPrice,
-                                        fontSize: 24,
+                                        fontSize:
+                                            24, // Slightly smaller to save space
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  width: 80,
+                                const SizedBox(width: 10), // Small gap
+                                // 2. Add to Cart Button (Wrapped in Expanded to prevent overflow)
+                                Expanded(
                                   child: NeomorphicButton(
-                                    padding: 18,
+                                    padding:
+                                        15, // Reduced from 18 to save vertical/horizontal space
                                     borderRadius: 20,
                                     gradient: AppColors.blueGradient,
                                     onTap: () {
@@ -301,13 +275,29 @@ class _DetailScreenState extends State<DetailScreen> {
                                         ),
                                       );
                                     },
-                                    child: Center(
-                                      child: Image.asset(
-                                        'assets/images/nav/cart.png',
-                                        color: Colors.white,
-                                        width: 24,
-                                        height: 24,
-                                      ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          Icons.shopping_cart_outlined,
+                                          color: Colors.white,
+                                          size: 18, // Slightly smaller icon
+                                        ),
+                                        const SizedBox(width: 8),
+                                        FittedBox(
+                                          // Ensures text scales down if it's still too tight
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                            'Add to Cart',
+                                            style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
@@ -325,6 +315,33 @@ class _DetailScreenState extends State<DetailScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSpecsTable() {
+    return Column(
+      children: widget.product.specifications.entries.map((e) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                e.key,
+                style: GoogleFonts.poppins(color: Colors.white60, fontSize: 14),
+              ),
+              Text(
+                e.value,
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        );
+      }).toList(),
     );
   }
 }

@@ -99,15 +99,11 @@ class _CartScreenState extends State<CartScreen> {
                                   child: Row(
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: GlassCard(
-                                          width: 80,
-                                          borderRadius: 15,
-                                          opacity: 0.2,
-                                          child: Image.asset(
-                                            item.product.imageUrl,
-                                            fit: BoxFit.contain,
-                                          ),
+                                        padding: const EdgeInsets.all(10.01),
+
+                                        child: Image.asset(
+                                          item.product.imageUrl,
+                                          fit: BoxFit.contain,
                                         ),
                                       ),
                                       Expanded(
@@ -148,10 +144,12 @@ class _CartScreenState extends State<CartScreen> {
                                               horizontal: 10.0,
                                             ),
                                             child: SizedBox(
-                                              width: 30, // Adjust this value based on your design needs
+                                              width:
+                                                  30, // Adjust this value based on your design needs
                                               child: Text(
                                                 '${item.quantity}',
-                                                textAlign: TextAlign.center, // Keeps the number centered in the fixed width
+                                                textAlign: TextAlign
+                                                    .center, // Keeps the number centered in the fixed width
                                                 style: GoogleFonts.poppins(
                                                   color: Colors.white,
                                                 ),
@@ -197,45 +195,62 @@ class _CartScreenState extends State<CartScreen> {
                             Row(
                               children: [
                                 Expanded(
-                                  child: Container(
+                                  child: GlassCard(
                                     height: 55,
-                                    decoration: inset.BoxDecoration(
-                                      color: const Color(
-                                        0xFF353F54,
-                                      ).withOpacity(0.5),
-                                      borderRadius: BorderRadius.circular(15),
-                                      boxShadow: [
-                                        inset.BoxShadow(
-                                          color: Colors.black.withOpacity(0.4),
-                                          offset: const Offset(4, 4),
-                                          blurRadius: 8,
-                                          inset: true,
-                                        ),
-                                      ],
-                                    ),
-                                    child: TextField(
-                                      controller: _promoController,
-                                      style: GoogleFonts.poppins(
-                                        color: Colors.white,
+                                    borderRadius: 30,
+                                    padding: EdgeInsets
+                                        .zero, // Important to keep the TextField alignment
+                                    child: Container(
+                                      // Using a container inside to apply the inset shadow
+                                      decoration: inset.BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        boxShadow: [
+                                          inset.BoxShadow(
+                                            color: Colors.black.withOpacity(
+                                              0.4,
+                                            ),
+                                            offset: const Offset(4, 4),
+                                            blurRadius: 8,
+                                            inset: true,
+                                          ),
+                                          inset.BoxShadow(
+                                            color: Colors.white.withOpacity(
+                                              0.05,
+                                            ),
+                                            offset: const Offset(-2, -2),
+                                            blurRadius: 4,
+                                            inset: true,
+                                          ),
+                                        ],
                                       ),
-                                      decoration: InputDecoration(
-                                        hintText: 'Promo Code',
-                                        hintStyle: GoogleFonts.poppins(
-                                          color: Colors.white24,
+                                      child: TextField(
+                                        controller: _promoController,
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
                                           fontSize: 14,
                                         ),
-                                        border: InputBorder.none,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                              horizontal: 20,
-                                            ),
+                                        decoration: InputDecoration(
+                                          hintText: 'Promo Code',
+                                          hintStyle: GoogleFonts.poppins(
+                                            color: Colors.white24,
+                                            fontSize: 14,
+                                          ),
+                                          border: InputBorder.none,
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                horizontal: 20,
+                                                vertical: 15,
+                                              ),
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                                 const SizedBox(width: 15),
                                 NeomorphicButton(
-                                  padding: 15,
+                                  padding:
+                                      14, // Slightly more padding to match height of input
+                                  borderRadius: 30,
                                   gradient: AppColors.blueGradient,
                                   onTap: () {
                                     if (_promoController.text.toUpperCase() ==
@@ -248,6 +263,7 @@ class _CartScreenState extends State<CartScreen> {
                                           content: Text(
                                             'Promo BIKE20 applied! 20% discount',
                                           ),
+                                          behavior: SnackBarBehavior.floating,
                                         ),
                                       );
                                     } else {
@@ -258,6 +274,7 @@ class _CartScreenState extends State<CartScreen> {
                                           content: Text(
                                             'Invalid Promo Code. Try BIKE20',
                                           ),
+                                          behavior: SnackBarBehavior.floating,
                                         ),
                                       );
                                     }
