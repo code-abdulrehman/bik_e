@@ -29,6 +29,7 @@ class MapScreen extends StatelessWidget {
               TileLayer(
                 urlTemplate:
                     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'com.example.bike', 
                 subdomains: const ['a', 'b', 'c'],
                 // Apply a dark/blue filter to match app theme
                 tileBuilder: (context, tileWidget, tile) {
@@ -186,9 +187,9 @@ class MapScreen extends StatelessWidget {
       _createMarker(LatLng(33.6844, 63.2470)), // Centaurus
       _createMarker(LatLng(31.6944, 73.0159)),
       _createMarker(LatLng(33.6454, 74.0369)),
-      _createMarker(LatLng(81.7003, 31.0679)),
-      _createMarker(LatLng(44.6612, 87.0369)),
-      _createMarker(LatLng(13.7044, 61.0620)),
+      _createMarker(LatLng(31.7003, 31.0679)),
+      _createMarker(LatLng(30.6612, 73.0369)),
+      _createMarker(LatLng(13.7044, 73.0620)),
       _createMarker(LatLng(33.7144, 73.0779)), // Near Faisal Mosque area
       _createMarker(LatLng(33.6844, 73.0279)), // F-9 Park area
       _createMarker(LatLng(33.6644, 73.0579)), // Blue Area

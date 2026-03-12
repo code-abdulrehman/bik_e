@@ -63,11 +63,21 @@ class _DetailScreenState extends State<DetailScreen> {
                           height: 20,
                         ),
                       ),
-                      Text(
-                        widget.product.name,
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize: 22,
+                      // The 80% "Production Ready" Way
+                      Container(
+                        padding: const EdgeInsets.all(7.0),
+                        width:
+                            MediaQuery.of(context).size.width *
+                            0.8, // Takes 80% of screen width
+                        child: Text(
+                          widget.product.name,
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       GestureDetector(

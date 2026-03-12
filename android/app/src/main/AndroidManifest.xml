@@ -1,4 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- REQUIRED -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:label="Bik_e"
         android:name="${applicationName}"

@@ -100,10 +100,16 @@ class _CartScreenState extends State<CartScreen> {
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.all(10.01),
-
-                                        child: Image.asset(
-                                          item.product.imageUrl,
-                                          fit: BoxFit.contain,
+                                        child: SizedBox(
+                                          width:
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.width *
+                                              0.10, // Exactly 20% of screen width
+                                          child: Image.asset(
+                                            item.product.imageUrl,
+                                            fit: BoxFit.contain,
+                                          ),
                                         ),
                                       ),
                                       Expanded(
@@ -115,12 +121,17 @@ class _CartScreenState extends State<CartScreen> {
                                           children: [
                                             Text(
                                               item.product.name,
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
                                               style: GoogleFonts.poppins(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            const SizedBox(height: 5),
+                                            const SizedBox(
+                                              height: 5,
+                                              width: 10,
+                                            ),
                                             Text(
                                               '\$ ${item.product.price}',
                                               style: GoogleFonts.poppins(
