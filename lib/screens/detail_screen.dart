@@ -68,7 +68,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         padding: const EdgeInsets.all(7.0),
                         width:
                             MediaQuery.of(context).size.width *
-                            0.8, // Takes 80% of screen width
+                            0.6, // Takes 80% of screen width
                         child: Text(
                           widget.product.name,
                           style: GoogleFonts.poppins(

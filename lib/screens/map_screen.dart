@@ -27,26 +27,16 @@ class MapScreen extends StatelessWidget {
             ),
             children: [
               TileLayer(
-                urlTemplate:
-                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                userAgentPackageName: 'com.example.bike', 
-                subdomains: const ['a', 'b', 'c'],
-                // Apply a dark/blue filter to match app theme
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'com.example.bike_shopping_app',
+
                 tileBuilder: (context, tileWidget, tile) {
                   return ColorFiltered(
-                    colorFilter: const ColorFilter.matrix([
-                      -0.5, -0.5, -0.5, 0, 100, // Even darker red channel
-                      -0.5, -0.5, -0.5, 0, 100, // Even darker green channel
-                      -0.5, -0.5, -0.5, 0, 100, // Even darker blue channel
-                      0, 0, 0, 1, 0, // Alpha
-                    ]),
-                    child: ColorFiltered(
-                      colorFilter: ColorFilter.mode(
-                        const Color(0xFF1B232E).withOpacity(0.85),
-                        BlendMode.multiply,
-                      ),
-                      child: tileWidget,
+                    colorFilter: ColorFilter.mode(
+                      const Color(0xFF1B232E).withOpacity(0.75),
+                      BlendMode.multiply,
                     ),
+                    child: tileWidget,
                   );
                 },
               ),

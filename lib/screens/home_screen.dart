@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            'Choose Your Bike',
+                            'Bik_e',
                             style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontSize: 24,
